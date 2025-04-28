@@ -4,7 +4,7 @@ const prettier = require('eslint-plugin-prettier');
 /** @type {import('eslint').Linter.FlatConfig[]} */
 module.exports = [
   {
-    ignores: ['node_modules/', 'allure-report/', 'allure-results/'],
+    ignores: ['node_modules/', 'allure-report/', 'allure-results/', 'wdio.conf.js'],
     files: ['./src/**/*.js', './tests/**/*.js'],
     languageOptions: {
       ecmaVersion: 'latest',

@@ -12,29 +12,30 @@ This project contains a mobile automation testing framework built with Webdriver
 - Environment Variables
 
 ## Project Structure
+
 ```
 src/
 ├── apk/                                                # APK file for testing
 │   └── app-debug.apk
-├── chromedriver-mobile/                                # Chromedriver for WebView testing
-│   └── chromedriver.exe
 ├── commands/                                           # Custom helper commands
 │   └── step.js
-├── logs/                                               # Appium logs
-│   └── wdio-appium.log
 ├── pages/                                              # Page Object Models
 │   ├── cartPage.js
-│   ├── catalogPage.js
+│   ├── prodcutPage.js
 │   ├── loginPage.js
 │   └── webViewPage.js
 ├── scripts/                                            # Utility scripts
 │   └── clearReporter.sh
 ├── utils/                                              # Utility functions
-│   ├── helper.js
-│   └── logger.js
+│   ├── constants.js
+│   └── helper.js
 
 tests/
-└── demoapp.spec.js                                     # Test specifications
+└── login.spec.js                                       # Tests for login area
+└── cart.spec.js                                        # Tests for cart area
+└── product.spec.js                                     # Test specifications
+└── webView.spec.js                                     # Test specifications
+
 
 .eslintrc, .eslintignore, .prettierrc, .prettierignore  # Linter and formatter configs
 .env, .env.example                                      # Environment variable examples
@@ -45,49 +46,58 @@ package.json                                            # Project metadata and s
 ## Setup Instructions
 
 1. Install dependencies
-    ```bash
-    npm install
-    ```
+   ```bash
+   npm install
+   ```
 2. Configure environment variables:
    - Copy .env.example to .env
    - Fill in necessary values (e.g., device name, Appium server URL)
 
 ## Running Tests
+
 Run all tests using:
+
 ```bash
 npm run wdio:run
 ```
+
 This will start the Appium server and execute the test suite.
 
 ## Generating Allure Reports
+
 1. Run tests to collect Allure results:
-    ```bash
+   ```bash
    npm run wdio:run
-    ```
+   ```
 2. Generate and open the Allure report:
-    ```bash
+   ```bash
    npm run allure:generate && npm run allure:open
-    ```
+   ```
    - Report results are stored under allure-results/
    - HTML reports are generated under allure-report/
 
 ## Linting and Formatting
+
 - Lint the project:
-    ```bash
-    npm run lint
-    ```
+  ```bash
+  npm run lint
+  ```
 - Format files with Prettier:
-    ```bash
-    npm run prettier
-    ```
+  ```bash
+  npm run prettier
+  ```
 
 ## Environment Variables
-The ```.env``` file contains configuration like:
+
+The `.env` file contains configuration like:
+
 ```.dotenv
 DEVICE_NAME=
 PLATFORM_VERSION=
 AUTOMATION_DRIVER_NAME=
 LOG_LEVEL=info
-RETRIES=0
+RETRIES=1
+TEST_USERNAME=
 ```
+
 Refer to .env.example for a template

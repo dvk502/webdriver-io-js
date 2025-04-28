@@ -1,3 +1,5 @@
+global.constants = require('#utils/constants');
+
 class CartPage {
   get cartTotalPrice() {
     return driver.$('id=totalPriceTV');
@@ -31,7 +33,7 @@ class CartPage {
   }
 
   async checkNoItemsTextDisplayed() {
-    await expect(this.noItemsText).toHaveAttribute('text', 'No Items');
+    await expect(this.noItemsText).toHaveAttribute('text', constants.CART.EMPTY_CART_TEXT);
   }
 
   async clickGoShopping() {
