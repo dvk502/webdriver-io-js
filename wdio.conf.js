@@ -2,6 +2,8 @@ const dotenv = require('dotenv');
 const path = require('path');
 require('module-alias/register');
 
+const timeout = Number(process.env.DEFAULT_TIMEOUT)
+
 dotenv.config();
 
 exports.config = {
@@ -39,7 +41,7 @@ exports.config = {
       }
     ]
   ],
-  waitforTimeout: 15000,
+  waitforTimeout: timeout,
   connectionRetryTimeout: 120000,
   connectionRetryCount: 3,
   framework: 'mocha',
@@ -62,7 +64,7 @@ exports.config = {
       {
         outputDir: 'allure-results',
         disableWebdriverStepsReporting: true,
-        disableWebdriverScreenshotsReporting: false
+        disableWebdriverScreenshotsReporting: true
       }
     ]
   ],

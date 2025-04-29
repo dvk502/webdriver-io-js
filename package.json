@@ -11,7 +11,11 @@
     "lint": "eslint ./src ./tests --ext .js",
     "lint: fix": "eslint ./src ./tests --ext .js --fix",
     "prettier": "prettier --write './**/*.{js,json,md}'",
-    "wdio:run": "npm run allure:clear && wdio run ./wdio.conf.js"
+    "tests:login": "npm run allure:clear && wdio run ./wdio.conf.js --spec ./tests/login.spec.js",
+    "tests:cart": "npm run allure:clear && wdio run ./wdio.conf.js --spec ./tests/cart.spec.js",
+    "tests:product": "npm run allure:clear && wdio run ./wdio.conf.js --spec ./tests/product.spec.js",
+    "tests:webView": "npm run allure:clear && wdio run ./wdio.conf.js --spec ./tests/webView.spec.js",
+    "tests:all": "npm run allure:clear && wdio run ./wdio.conf.js"
   },
   "author": "",
   "license": "ISC",
@@ -31,7 +35,6 @@
     "eslint-plugin-prettier": "^5.2.6",
     "eslint-plugin-wdio": "^9.9.1",
     "mocha": "^11.1.0",
-    "pino-pretty": "^13.0.0",
     "prettier": "^3.5.3",
     "rimraf": "^6.0.1",
     "wait-port": "^1.1.0",
@@ -41,8 +44,7 @@
   "dependencies": {
     "dotenv": "^16.5.0",
     "jimp": "^0.16.1",
-    "module-alias": "^2.2.3",
-    "pino": "^9.6.0"
+    "module-alias": "^2.2.3"
   },
   "_moduleAliases": {
     "#pages": "src/pages",

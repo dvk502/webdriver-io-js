@@ -1,6 +1,7 @@
 global.constants = require('#utils/constants');
+global.BasePage = require('#pages/basePage');
 
-class CartPage {
+class CartPage extends BasePage {
   get cartTotalPrice() {
     return driver.$('id=totalPriceTV');
   }
@@ -21,31 +22,43 @@ class CartPage {
   }
 
   async checkCartHasText(text) {
-    await expect(this.myCartText).toHaveAttribute('text', text);
+    await step(`Check cart has value ${text}`, async () => {
+      await this.expectElementAttributeToEqual(this.myCartText, 'text', text);
+    });
   }
 
   async checkItemCounterHasText(text) {
-    await expect(this.itemCounter).toHaveAttribute('text', text);
+    await step(`Check item counter has value ${text}`, async () => {
+      await this.expectElementAttributeToEqual(this.itemCounter, 'text', text);
+    });
   }
 
   async checkCartTotalPriceHasValue(text) {
-    await expect(this.cartTotalPrice).toHaveAttribute('text', text);
+    await step(`Check cart total price has value ${text}`, async () => {
+      await this.expectElementAttributeToEqual(this.cartTotalPrice, 'text', text);
+    });
   }
 
   async checkNoItemsTextDisplayed() {
-    await expect(this.noItemsText).toHaveAttribute('text', constants.CART.EMPTY_CART_TEXT);
+    await step('Check shopping cart is empty', async () => {
+      await this.expectElementAttributeToEqual(
+        this.noItemsText,
+        'text',
+        constants.CART.EMPTY_CART_TEXT
+      );
+    });
   }
 
   async clickGoShopping() {
-    await this.goShoppingButton.click();
-  }
-
-  async checkGoShoppingButtonIsDisplayed() {
-    await expect(this.goShoppingButton).toBeDisplayed();
+    await step('Go to shopping catalog', async () => {
+      await this.clickElement(this.goShoppingButton);
+    });
   }
 
   async clickRemoveItemsButton() {
-    await this.removeItemsButton.click();
+    await step('Remove item from cart', async () => {
+      await this.clickElement(this.removeItemsButton);
+    });
   }
 }
 

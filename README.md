@@ -98,6 +98,7 @@ AUTOMATION_DRIVER_NAME=
 LOG_LEVEL=info
 RETRIES=1
 TEST_USERNAME=
+DEFAULT_TIMEOUT=15000
 ```
 
 Refer to .env.example for a template
