@@ -20,23 +20,19 @@ src/
 ├── commands/                                           # Custom helper commands
 │   └── step.js
 ├── pages/                                              # Page Object Models
+│   ├── basePage.js
 │   ├── cartPage.js
 │   ├── prodcutPage.js
 │   ├── loginPage.js
 │   └── webViewPage.js
-├── scripts/                                            # Utility scripts
-│   └── clearReporter.sh
 ├── utils/                                              # Utility functions
 │   ├── constants.js
 │   └── helper.js
-
 tests/
 └── login.spec.js                                       # Tests for login area
 └── cart.spec.js                                        # Tests for cart area
 └── product.spec.js                                     # Test specifications
 └── webView.spec.js                                     # Test specifications
-
-
 .eslintrc, .eslintignore, .prettierrc, .prettierignore  # Linter and formatter configs
 .env, .env.example                                      # Environment variable examples
 wdio.conf.js                                            # WebdriverIO configuration
