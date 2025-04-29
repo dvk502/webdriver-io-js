@@ -1,4 +1,6 @@
-class WebViewPage {
+global.BasePage = require('#pages/basePage');
+
+class WebViewPage extends BasePage {
   get urlInput() {
     return driver.$('id=urlET');
   }
@@ -10,15 +12,21 @@ class WebViewPage {
   }
 
   async fillUrlInput(text) {
-    await this.urlInput.setValue(text);
+    await step('Fill input with url', async () => {
+      await this.setInputValue(this.urlInput, text);
+    });
   }
 
   async clickGoToSideButton() {
-    await this.goToSideButton.click();
+    await step('Go to site', async () => {
+      await this.clickElement(this.goToSideButton);
+    });
   }
 
   async checkYoutubeContentDisplayed() {
-    await expect(this.youtubeContent).toBeDisplayed();
+    await step('Check youtube home icon is displayed', async () => {
+      await this.isElementDisplayed(this.youtubeContent);
+    });
   }
 }
 
