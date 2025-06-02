@@ -10,7 +10,8 @@
     "skipLibCheck": true,
     "experimentalDecorators": true,
     "paths": {
-      "@screens/*": ["./screens/*"]
+      "@screens/*": ["./screens/*"],
+      "@utils/*": ["./support/utils/*"]
     },
     "types": [
       "node",

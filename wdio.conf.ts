@@ -23,25 +23,31 @@ export const config: WebdriverIO.Config = {
   logLevels: {
     webdriver: logLevel
   },
-  capabilities: [],
+  port: 4723,
+  path: '/wd/hub',
+  hostname: 'localhost',
+  services: ['appium'],
+  capabilities: [
+    {
+      platformName: 'Android',
+      'appium:deviceName': 'R9PTA15CSLD',
+      'appium:automationName': 'UiAutomator2',
+      'appium:autoGrantPermissions': true,
+      'appium:ignoreUnimportantViews': true,
+      'appium:ensureWebviewsHavePages': true,
+      'appium:nativeWebScreenshot': true,
+      'appium:newCommandTimeout': 3600,
+      'appium:connectHardwareKeyboard': true
+    }
+  ],
+
   bail: 0,
   waitforTimeout: 30000,
   connectionRetryTimeout: 120000,
   connectionRetryCount: 3,
 
   suites: {
-    google_translate_all: [
-      path.resolve(__dirname, '../../google-translate-autotests/**/*.spec.ts')
-    ],
-    google_translate_functional: [
-      path.resolve(
-        __dirname,
-        '../../google-translate-autotests/functional-autotests/SearchLanguage.spec.ts'
-      )
-    ],
-    google_translate_non_functional: [
-      path.resolve(__dirname, '../../google-translate-autotests/non-functional-autotests/*.spec.ts')
-    ]
+    orchard_all_test: ['./tests/*.spec.ts']
   },
 
   // reporters: [
