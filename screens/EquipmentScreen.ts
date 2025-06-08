@@ -1,4 +1,5 @@
 import Elem from '@utils/Elem';
+import Gestures from '@utils/Gestures';
 
 class EquipmentScreen {
   //Locators
@@ -8,6 +9,12 @@ class EquipmentScreen {
 
   private get sidemenuEquipment() {
     return new Elem('id=com.trackensure.orchard:id/menuEquipment');
+  }
+
+  private cardById(inventoryNumber: string) {
+    return new Elem(
+      `//android.widget.TextView[@resource-id="com.trackensure.orchard:id/Inventory№" and @text="${inventoryNumber}"]/ancestor::android.view.View[1]/android.widget.TextView[@resource-id="com.trackensure.orchard:id/equipmentName"]`
+    );
   }
 
   private get equipmentCards() {
@@ -27,6 +34,9 @@ class EquipmentScreen {
   }
 
   //Steps
+  public async scrollToEquipmet(inventoryNumber: string, countScrols: number = 10) {
+    await Gestures.scrollUntilVisible(this.cardById(inventoryNumber), countScrols);
+  }
 
   public async clickEquipmentCardByIndex(index: number) {
     const cards = await $$('id=com.trackensure.orchard:id/equipmentItem');
