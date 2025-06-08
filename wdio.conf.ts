@@ -30,8 +30,11 @@ export const config: WebdriverIO.Config = {
   capabilities: [
     {
       platformName: 'Android',
-      'appium:deviceName': 'R9PTA15CSLD',
+      'appium:deviceName': `${process.env.DEVICE_NAME}`,
+      'appium:appPackage': `${process.env.APP}`,
+      'appium:appActivity': `${process.env.APP}.MainActivity`,
       'appium:automationName': 'UiAutomator2',
+      'appium:platformVersion': '14', 
       'appium:autoGrantPermissions': true,
       'appium:ignoreUnimportantViews': true,
       'appium:ensureWebviewsHavePages': true,
@@ -44,7 +47,7 @@ export const config: WebdriverIO.Config = {
   bail: 0,
   waitforTimeout: 30000,
   connectionRetryTimeout: 120000,
-  connectionRetryCount: 3,
+  connectionRetryCount: 0,
 
   suites: {
     orchard_all_test: ['./tests/*.spec.ts']

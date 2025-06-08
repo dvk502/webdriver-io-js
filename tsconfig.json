@@ -11,7 +11,8 @@
     "experimentalDecorators": true,
     "paths": {
       "@screens/*": ["./screens/*"],
-      "@utils/*": ["./support/utils/*"]
+      "@utils/*": ["./support/utils/*"],
+      "@api/*": ["./support/api/*"]
     },
     "types": [
       "node",

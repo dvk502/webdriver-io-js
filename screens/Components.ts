@@ -1,4 +1,4 @@
-import Elem from '@utils/Elem'
+import Elem from '@utils/Elem';
 
 class Components {
   //Locators
@@ -6,10 +6,13 @@ class Components {
     return new Elem('id=com.trackensure.orchard:id/kebabMenu');
   }
 
-  private titleTopAppbar(text: string) {
-    return new Elem(`//android.widget.TextView[@text="${text}"]`);
+  private titleTopAppbar() {
+    return new Elem('id=com.trackensure.orchard:id/title');
   }
 
+  private title() {
+    return $('id=com.trackensure.orchard:id/title');
+  }
 
   //Steps
   public async burgerButtonClick(): Promise<void> {
@@ -17,9 +20,7 @@ class Components {
   }
 
   public async verifyTitleText(text: string): Promise<void> {
-    await this.titleTopAppbar("My Profile").checkElementPresence("My Profile2")
-
+    await this.titleTopAppbar().verifyText(text);
   }
-
 }
 export default new Components();

@@ -26,7 +26,7 @@ export default class ScreenActions {
    * @param {Number} timeout - Time to wait for the element to be displayed (in seconds).
    * @returns {Promise<boolean>} - True if the element is displayed, false otherwise.
    */
-//   @step(`isDisplayed`)
+  //   @step(`isDisplayed`)
   public async isDisplayed(timeout = this.timeout): Promise<boolean> {
     try {
       const element = await this.getWdioElement();
@@ -47,7 +47,7 @@ export default class ScreenActions {
    * @returns {Promise<WebdriverIO.Element>} - The displayed element.
    * @throws {Error} - If the element is not displayed after the timeout.
    */
-//   @step('checkIsDisplayed')
+  //   @step('checkIsDisplayed')
   public async checkIsDisplayed(
     timeout = this.timeout,
     customMessage?: string
@@ -68,7 +68,7 @@ export default class ScreenActions {
    * @returns {Promise<void>}
    * @throws {Error} - If the element is still displayed after the timeout.
    */
-//   @step(`checkIsDisappeared`)
+  //   @step(`checkIsDisappeared`)
   public async checkIsDisappeared(timeout = this.timeout): Promise<void> {
     try {
       await browser.waitUntil(async () => !(await this.isDisplayed(0.1)), {
@@ -87,7 +87,7 @@ export default class ScreenActions {
    * @param {String} text - The text to be typed into the element.
    * @returns {Promise<void>}
    */
-//   @step(`type`)
+  //   @step(`type`)
   async type(text: string): Promise<void> {
     const element = await this.checkElementPresence();
     await element.clearValue();
@@ -99,7 +99,7 @@ export default class ScreenActions {
    * @param {Number} timeout - Time to wait for the element to be present (in seconds).
    * @returns {Promise<boolean>} - True if the element is present, false otherwise.
    */
-//   @step(`isPresent`)
+  //   @step(`isPresent`)
   async isPresent(timeout = this.timeout): Promise<boolean> {
     try {
       const element = await this.getWdioElement();
@@ -119,7 +119,7 @@ export default class ScreenActions {
    * @returns {Promise<WebdriverIO.Element>} - The present element.
    * @throws {Error} - If the element is not present after the timeout.
    */
-//   @step(`checkElementPresence`)
+  //   @step(`checkElementPresence`)
   async checkElementPresence(
     customErrorMessage?: string,
     timeout = this.timeout
@@ -143,7 +143,7 @@ export default class ScreenActions {
    * @param {any} clickOptions - Options for the click action.
    * @returns {Promise<void>}
    */
-//   @step(`click`)
+  //   @step(`click`)
   async click(
     timeout = this.timeout,
     customErrorMessage?: string,
@@ -160,7 +160,7 @@ export default class ScreenActions {
    * @param {Number} duration - Duration of the long tap (in seconds).
    * @returns {Promise<void>}
    */
-//   @step(`longTap`)
+  //   @step(`longTap`)
   async longTap(duration = 2): Promise<void> {
     const element = await this.getWdioElement();
     await element.touchAction(['press', { action: 'wait', ms: duration * 1000 }, 'release']);
@@ -171,7 +171,7 @@ export default class ScreenActions {
    * @param {Number} timeout - Time to wait for the element to be displayed (in seconds).
    * @returns {Promise<string>} - The text content of the element.
    */
-//   @step(`getText`)
+  //   @step(`getText`)
   async getText(timeout = this.timeout): Promise<string> {
     const element = await this.checkIsDisplayed(timeout);
     return element.getText();
@@ -182,7 +182,7 @@ export default class ScreenActions {
    * @param {Number} timeout - Time to wait for the element to be present (in seconds).
    * @returns {Promise<string>} - The value of the element.
    */
-//   @step(`getValue`)
+  //   @step(`getValue`)
   async getValue(timeout = this.timeout): Promise<string> {
     const element = await this.checkElementPresence('Please try with another selector', timeout);
     return element.getValue();
@@ -194,9 +194,16 @@ export default class ScreenActions {
    * @param {Number} timeout - Time to wait for the element to be present (in seconds).
    * @returns {Promise<string>} - The value of the specified attribute.
    */
-//   @step(`getAttributeValue`)
+  //   @step(`getAttributeValue`)
   async getAttributeValue(attribute: string, timeout = this.timeout): Promise<string> {
     const element = await this.checkElementPresence('Please try with another selector', timeout);
     return element.getAttribute(attribute);
+  }
+
+  async verifyText(expectedText: string): Promise<void> {
+    const element = await this.checkElementPresence(`Element not found`);
+    await expect(element).toHaveText(expectedText, {
+      message: `Expected text "${expectedText}"`
+    });
   }
 }

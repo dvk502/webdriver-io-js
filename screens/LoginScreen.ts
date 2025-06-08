@@ -1,4 +1,4 @@
-import Elem from '@utils/Elem'
+import Elem from '@utils/Elem';
 
 class LoginScreen {
   //Locators
@@ -24,5 +24,12 @@ class LoginScreen {
   public async clickLoginButton(): Promise<void> {
     await this.loginButton.click();
   }
+
+  public async loginAgent(email: string): Promise<void> {
+    await this.inputEmailField(email);
+    await this.inputPasswordField('test');
+    await this.clickLoginButton();
+  }
 }
+
 export default new LoginScreen();
