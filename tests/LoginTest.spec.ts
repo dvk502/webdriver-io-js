@@ -4,8 +4,7 @@ import { ApplicationScreens } from '@screens/ApplicationScreens';
 describe('Login tests', () => {
   const api = new ApiClasses();
   it.only('Login Api test', async () => {
-    const response = await api.login.preAuthenticate('214');
-    console.log(response);
+    const response = await api.login.login('214');
   });
 
   const screens = new ApplicationScreens();

@@ -58,7 +58,7 @@ export default class ApiController {
       headers,
       data
     };
-    console.log(config);
+    // console.log(config);
     return this.request(config, timeout);
   }
 
@@ -76,7 +76,6 @@ export default class ApiController {
   protected async delete(
     url: string,
     headers?: any,
-    returnResponse: string = 'data',
     timeout?: number
   ) {
     const config: AxiosRequestConfig = {

@@ -16,7 +16,6 @@ class LoginController extends ApiController {
       password: process.env.PASSWORD!
     };
 
-    console.log(requestBody);
     const headers = {
       'Content-Type': 'application/json'
     };
@@ -38,28 +37,25 @@ class LoginController extends ApiController {
   }
 
   async login(username: string): Promise<UserAuthData> {
+    const preAuthData = await this.preAuthenticate(username);
+
+    const requestBody = {
+      appVersion: DEVICE.appVersion,
+      platform: DEVICE.platform,
+      platformVersion: DEVICE.platformVersion,
+      uuid: DEVICE.uuid,
+      orgId: preAuthData.orgId
+    };
+
+    const headers = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${preAuthData.token}`
+    };
+
     try {
-      // Получаем предварительные данные (token, orgId)
-      const preAuthData = await this.preAuthenticate(username);
-
-      const requestBody = {
-        appVersion: DEVICE.appVersion,
-        platform: DEVICE.platform,
-        platformVersion: DEVICE.platformVersion,
-        uuid: DEVICE.uuid,
-        orgId: preAuthData.orgId
-      };
-
-      const headers = {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${preAuthData.token}`
-      };
-
       const response = await this.post(AUTH_ENDPOINT.authenticate, requestBody, headers);
       const { token: authToken } = response.data as AuthResponse;
-
       console.log(`[OK] Logged in user ${username}`);
-
       return {
         ...preAuthData,
         authToken
