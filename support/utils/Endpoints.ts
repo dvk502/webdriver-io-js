@@ -31,3 +31,7 @@ export const EQUIPMENT = {
   export const MEETING = {
     calendarEvent: '/calendar/event',
   };
+  
+  export const AGENT_PROFILE = {
+    publicInfo: (agentId: number) => `/agent/${agentId}/public-info`,
+  };

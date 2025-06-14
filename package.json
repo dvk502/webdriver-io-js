@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "tests:all": "npx wdio run wdio.conf.ts --suite orchard_all_test"
+    "tests:all": "npx wdio run wdio.conf.ts --suite orchard_all_test",
+    "test": "npx wdio run wdio.conf.ts --spec ./tests/LoginTest.spec.ts"
   },
   "author": "",
   "license": "ISC",

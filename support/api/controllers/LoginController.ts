@@ -36,7 +36,12 @@ class LoginController extends ApiController {
     }
   }
 
-  async login(username: string): Promise<UserAuthData> {
+  /**
+   *
+   * @param username - agent's email
+   * @returns AuthResponse
+   */
+  async login(username: any): Promise<AuthResponse> {
     const preAuthData = await this.preAuthenticate(username);
 
     const requestBody = {
@@ -48,22 +53,17 @@ class LoginController extends ApiController {
     };
 
     const headers = {
-      'Content-Type': 'application/json',
       Authorization: `Bearer ${preAuthData.token}`
     };
 
     try {
       const response = await this.post(AUTH_ENDPOINT.authenticate, requestBody, headers);
-      const { token: authToken } = response.data as AuthResponse;
       console.log(`[OK] Logged in user ${username}`);
-      return {
-        ...preAuthData,
-        authToken
-      };
+      return response.data as AuthResponse;
     } catch (error) {
       throw new Error(`[FAIL] Login for user ${username}, error: ${error}`);
     }
   }
 }
 
-export default new LoginController();
+export default LoginController;

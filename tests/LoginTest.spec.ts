@@ -1,10 +1,16 @@
 import { ApiClasses } from '@api/ApiClasses';
+import AgentMapper from '@api/mappers/AgentMapper';
 import { ApplicationScreens } from '@screens/ApplicationScreens';
+import CommonMethods from '@utils/CommonMethods';
 
 describe('Login tests', () => {
   const api = new ApiClasses();
   it.only('Login Api test', async () => {
-    const response = await api.login.login('214');
+    // const response = await api.profile.getPublicInfoAgent(221);
+
+    const agentData = await AgentMapper.personalToUIModel(221);
+
+    console.log(agentData);
   });
 
   const screens = new ApplicationScreens();

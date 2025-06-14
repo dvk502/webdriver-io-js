@@ -15,6 +15,7 @@ export interface PreAuthResponse {
 
 export interface AuthResponse {
   token: string;
+  agentStatus: string;
   agentId: number;
   firstName: string;
   lastName: string;
