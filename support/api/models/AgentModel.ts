@@ -1,8 +1,9 @@
-export interface AgentDTO {
+export interface AgentPublicDTO {
   agentId: number;
   gender: string;
   birthday: Date;
   status: string;
+  loginName: string;
   agentDocumentList: AgentDocumentDTO[];
   department: string;
   departmentId: number;
@@ -42,7 +43,7 @@ export interface AgentDTO {
   primary: boolean;
   contactDTOList: AgentContact[];
   languageDTOList: AgentLanguage[];
-  infoDTO: AgentInfo;
+  infoDTO: InfoDTO;
   historyDTOList: AgentHistoryDTO[];
   addressDTO: AddressDTO;
   readyToRelocate: boolean;
@@ -146,7 +147,7 @@ export interface AgentLanguage {
   level: string;
 }
 
-export interface AgentInfo {
+export interface InfoDTO {
   infoId: number;
   agentId: number;
   phoneNumber: string;
@@ -157,6 +158,7 @@ export interface AgentInfo {
   loginName: string;
   readyToRelocate: boolean;
   vacationResetDate: number;
+  probationEndDate: Date; //бек пока не присылает
   intertshipEnd: Date; //бек пока не присылает
 }
 

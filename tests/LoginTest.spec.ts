@@ -5,7 +5,7 @@ import CommonMethods from '@utils/CommonMethods';
 
 describe('Login tests', () => {
   const api = new ApiClasses();
-  it.only('Login Api test', async () => {
+  it('Login Api test', async () => {
     // const response = await api.profile.getPublicInfoAgent(221);
 
     const agentData = await AgentMapper.personalToUIModel(221);

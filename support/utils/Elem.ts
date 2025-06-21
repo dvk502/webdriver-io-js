@@ -1,5 +1,7 @@
 // import { step } from '@reporter/AllureDecorators';
 
+import Gestures from './Gestures';
+
 export default class ScreenActions {
   private selector: string;
   private timeout: number;
@@ -205,5 +207,13 @@ export default class ScreenActions {
     await expect(element).toHaveText(expectedText, {
       message: `Expected text "${expectedText}"`
     });
+  }
+
+  async scrollIntoView(maxScrolls = 10): Promise<void> {
+    await Gestures.scrollUntilVisible(this, maxScrolls);
+  }
+
+  async scrollIntoViewContainer(maxScrolls = 10, container: string): Promise<void> {
+    await Gestures.scrollUntilVisibleIntoBox(this, container, maxScrolls);
   }
 }

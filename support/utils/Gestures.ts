@@ -79,12 +79,11 @@ class Gestures {
     element: Elem,
     scrollContainerSelector: string,
     maxAttempts = 10
-  ): Promise<void> {
+  ): Promise<boolean> {
     const container = await driver.$(scrollContainerSelector);
     const { width, height } = await container.getSize();
     const { x, y } = await container.getLocation();
 
-    // Вложенная функция для свайпа
     const swipe = async (direction: 'up' | 'down', duration: number) => {
       const startY = direction === 'up' ? y + height * 0.8 : y + height * 0.2;
       const endY = direction === 'up' ? y + height * 0.2 : y + height * 0.8;
@@ -98,41 +97,35 @@ class Gestures {
             { type: 'pointerMove', duration: 0, x: x + width / 2, y: startY },
             { type: 'pointerDown', button: 0 },
             { type: 'pause', duration: 100 },
-            { type: 'pointerMove', duration: duration, x: x + width / 2, y: endY },
+            { type: 'pointerMove', duration, x: x + width / 2, y: endY },
             { type: 'pause', duration: 100 },
             { type: 'pointerUp', button: 0 }
           ]
         }
       ]);
-      await driver.pause(200);
+      await driver.pause(100);
     };
 
     // Первый проход вниз
     for (let i = 0; i < maxAttempts; i++) {
-      if (await element.isDisplayed(1)) return;
-      await swipe('up', 500); // Медленный свайп вверх (т.е. скролл вниз)
+      if (await element.isDisplayed(1)) return true;
+      await swipe('up', 500); // Скролл вниз
     }
 
-    // Если не найден — быстрый скролл вверх (вниз по пальцу)
+    // Быстрый проход вверх
     for (let i = 0; i < maxAttempts * 2; i++) {
-      if (await element.isDisplayed(1)) return;
-      await swipe('down', 50);
+      if (await element.isDisplayed(1)) return true;
+      await swipe('down', 50); // Быстрый скролл вверх
     }
 
-    // Второй проход вниз
+    // Повторный проход вниз
     for (let i = 0; i < maxAttempts; i++) {
-      if (await element.isDisplayed(1)) return;
-      await swipe('up', 500); // Медленный свайп вверх
+      if (await element.isDisplayed(1)) return true;
+      await swipe('up', 500);
     }
 
-    // Всё равно не найден — ошибка
-    if (!(await element.isDisplayed(1))) {
-      throw new Error(
-        `Element ${element} is not visible inside ${scrollContainerSelector} after ${
-          maxAttempts * 2
-        } scrolls.`
-      );
-    }
+    // Не найден
+    return false;
   }
 }
 

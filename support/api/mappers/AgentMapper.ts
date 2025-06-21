@@ -1,7 +1,7 @@
 import { ApiClasses } from '@api/ApiClasses';
 import CommonMethods from '@utils/CommonMethods';
 
-export interface AgentUIModel {
+export interface AgentPublicUIModel {
   fullName: string;
   workEmail: string;
   status?: string;
@@ -12,11 +12,14 @@ export interface AgentUIModel {
   contacts?: { contactType: string; contact: string }[];
   skype?: string;
   linkedin?: string;
+  other?: string;
+  workDiscordID?: string;
+  discord?: string;
   facebook?: string;
-  emailOther?: string;
+  email?: string;
   birthDate?: string;
   gender?: string;
-  LanguageList?: string[];
+  languageList?: string[];
   address?: string;
   readyToRelocate?: string;
   onboardDate?: string;
@@ -26,19 +29,18 @@ export interface AgentUIModel {
 }
 
 class AgentMapper {
-  public static async personalToUIModel(agentId: number): Promise<AgentUIModel> {
-    const api = await new ApiClasses();
+  public static async personalToUIModel(agentId: number): Promise<AgentPublicUIModel> {
+    const api = new ApiClasses();
 
     const response = await api.profile.getPublicInfoAgent(agentId);
 
     const languages: string[] =
       response.languageDTOList?.map((lang) => `${lang.language} - ${lang.level}`) || [];
 
-    const contacts =
-      response.contactDTOList?.map((cont) => ({
-        contactType: cont.contactType,
-        contact: cont.contact
-      })) || [];
+    const contacts = response.contactDTOList || [];
+
+    const getContact = (type: string): string | undefined =>
+      contacts.find((c) => c.contactType === type)?.contact;
 
     const birthday = response.infoDTO.birthDate
       ? CommonMethods.formatDate(response.infoDTO.birthDate)
@@ -46,19 +48,31 @@ class AgentMapper {
     const onboard = response.infoDTO.onboardDate
       ? CommonMethods.formatDate(response.infoDTO.onboardDate)
       : undefined;
+    const probation = response.infoDTO.probationEndDate
+      ? CommonMethods.formatDate(response.infoDTO.probationEndDate)
+      : undefined;
     const intern = response.infoDTO.intertshipEnd
       ? CommonMethods.formatDate(response.infoDTO.intertshipEnd)
       : undefined;
 
     return {
       fullName: `${response.firstName} ${response.lastName}`,
-      status: response.activeStatus,
+      status: response.status,
       position: response.positionDTO?.name || undefined,
       department: response.departmentDTO.name || undefined,
-      workEmail: response.infoDTO.loginName,
-      contacts: contacts || undefined,
+      workEmail: response.loginName,
+      // Явные поля из contacts
+      email: getContact('Email'),
+      telegram: getContact('Telegram'),
+      phone: getContact('Phone'),
+      skype: getContact('Skype'),
+      linkedin: getContact('Linkedin'),
+      other: getContact('Other'),
+      facebook: getContact('Facebook'),
+      discord: getContact('Discord'),
+      workDiscordID: getContact('Work Discord ID'),
       gender: response.infoDTO.gender || undefined,
-      LanguageList: languages || undefined,
+      languageList: languages || undefined,
       address:
         `${response.addressDTO.city}, ${response.addressDTO.region}, ${response.addressDTO.country}` ||
         undefined,
@@ -69,6 +83,7 @@ class AgentMapper {
 
       birthDate: birthday,
       onboardDate: onboard,
+      probationEnd: probation,
       internship: intern
     };
   }
