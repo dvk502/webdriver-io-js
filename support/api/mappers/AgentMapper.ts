@@ -43,16 +43,16 @@ class AgentMapper {
       contacts.find((c) => c.contactType === type)?.contact;
 
     const birthday = response.infoDTO.birthDate
-      ? CommonMethods.formatDate(response.infoDTO.birthDate)
+      ? CommonMethods.format(response.infoDTO.birthDate)
       : undefined;
     const onboard = response.infoDTO.onboardDate
-      ? CommonMethods.formatDate(response.infoDTO.onboardDate)
+      ? CommonMethods.format(response.infoDTO.onboardDate)
       : undefined;
     const probation = response.infoDTO.probationEndDate
-      ? CommonMethods.formatDate(response.infoDTO.probationEndDate)
+      ? CommonMethods.format(response.infoDTO.probationEndDate)
       : undefined;
     const intern = response.infoDTO.intertshipEnd
-      ? CommonMethods.formatDate(response.infoDTO.intertshipEnd)
+      ? CommonMethods.format(response.infoDTO.intertshipEnd)
       : undefined;
 
     return {

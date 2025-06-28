@@ -2,9 +2,12 @@ import { ApiClasses } from '@api/ApiClasses';
 import AgentMapper from '@api/mappers/AgentMapper';
 import { ApplicationScreens } from '@screens/ApplicationScreens';
 import CommonMethods from '@utils/CommonMethods';
+import { EventType } from '@utils/Enums';
 
 describe('Login tests', () => {
   const api = new ApiClasses();
+  const screens = new ApplicationScreens();
+
   it('Login Api test', async () => {
     // const response = await api.profile.getPublicInfoAgent(221);
 
@@ -12,8 +15,6 @@ describe('Login tests', () => {
 
     console.log(agentData);
   });
-
-  const screens = new ApplicationScreens();
 
   it('Positiv Login', async () => {
     await screens.login.loginAgent('214');
@@ -52,14 +53,29 @@ describe('Login tests', () => {
     await elem.click();
     await driver.pause(5000);
   });
-});
 
-it('scroll to Inventory№ ', async () => {
-  const screens = new ApplicationScreens();
+  it('scroll to Inventory№ ', async () => {
+    await screens.login.loginAgent('214');
 
-  await screens.login.loginAgent('214');
+    await screens.equipment.movingToEquipment();
 
-  await screens.equipment.movingToEquipment();
+    await screens.equipment.scrollToEquipmet('10000903', 1);
+  });
 
-  await screens.equipment.scrollToEquipmet('10000903', 1);
+  it.only('Calendar new test', async () => {
+    await screens.login.loginAgent('214');
+    await screens.topAppBar.clickCalendarButton();
+    await screens.topAppBar.clickAddButton();
+    await screens.eventScreen.clickDropdownEventType();
+    await screens.eventScreen.selectEvenType(EventType.SickLeave);
+    await screens.eventScreen.clickDateRange();
+    await screens.eventScreen.selectDate('Tuesday, 24 June');
+    await screens.eventScreen.selectDate('Thursday, 26 June');
+    await screens.eventScreen.clickConfirmButton();
+    await screens.topAppBar.clickSaveButton();
+
+    await driver.pause(3000);
+
+
+  });
 });
