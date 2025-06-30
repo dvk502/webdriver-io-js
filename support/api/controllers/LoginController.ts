@@ -9,6 +9,8 @@ interface UserAuthData {
   authToken?: string;
 }
 
+const tokenCache: Map<string, AuthResponse> = new Map();
+
 class LoginController extends ApiController {
   async preAuthenticate(username: string): Promise<UserAuthData> {
     const requestBody: PreAuthRequest = {
@@ -37,12 +39,15 @@ class LoginController extends ApiController {
   }
 
   /**
-   *
-   * @param username - agent's email
-   * @returns AuthResponse
+   * Авторизация (кэширует токен по username)
+   * @param agentId - agent's email
+   * @returns AuthResponse с токеном
    */
-  async login(username: any): Promise<AuthResponse> {
-    const preAuthData = await this.preAuthenticate(username);
+  async login(agentId: any): Promise<AuthResponse> {
+    if (tokenCache.has(agentId)) {
+      return tokenCache.get(agentId)!;
+    }
+    const preAuthData = await this.preAuthenticate(String(agentId));
 
     const requestBody = {
       appVersion: DEVICE.appVersion,
@@ -58,10 +63,12 @@ class LoginController extends ApiController {
 
     try {
       const response = await this.post(AUTH_ENDPOINT.authenticate, requestBody, headers);
-      console.log(`[OK] Logged in user ${username}`);
-      return response.data as AuthResponse;
+      const authData = response.data as AuthResponse;
+      tokenCache.set(agentId, authData);
+      console.log(`[OK] Logged in user ${agentId}`);
+      return authData;
     } catch (error) {
-      throw new Error(`[FAIL] Login for user ${username}, error: ${error}`);
+      throw new Error(`[FAIL] Login for user ${agentId}, error: ${error}`);
     }
   }
 }
