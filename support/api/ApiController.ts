@@ -69,7 +69,7 @@ export default class ApiController {
       headers,
       data
     };
-
+  //  console.log('PUT Request config:', config);
     return this.request(config, timeout);
   }
 
