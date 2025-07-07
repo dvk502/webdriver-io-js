@@ -1,4 +1,4 @@
-import CommonMethods, { DatePattern } from './CommonMethods';
+import CommonMethods, { DatePattern, DayOfWeek } from './CommonMethods';
 
 export interface WeekRange {
   from: Date;
@@ -78,11 +78,22 @@ function dateToFormat(dateStr: string): WeekDay {
 
 const dateTest = formatterToMilliseconds('22.06.25');
 
-console.log(CommonMethods.format(dateTest, DatePattern.DD_MMM_YYYY));
-console.log(CommonMethods.format(dateTest, DatePattern.DD_MM_YYYY));
-console.log(CommonMethods.format(dateTest, DatePattern.DDD));
-console.log(CommonMethods.format(dateTest, DatePattern.DD_MM_YY));
-console.log(CommonMethods.format(dateTest, DatePattern.DD));
-console.log(CommonMethods.format(dateTest, DatePattern.DD_MMMM_YYYY));
-console.log(CommonMethods.format(dateTest, DatePattern.DD_MMMM_YYYY_DDD));
-console.log(CommonMethods.format(dateTest, DatePattern.MMMM_YYYY));
+// console.log(CommonMethods.format(dateTest, DatePattern.DD_MMM_YYYY));
+// console.log(CommonMethods.format(dateTest, DatePattern.DD_MM_YYYY));
+// console.log(CommonMethods.format(dateTest, DatePattern.DDD));
+// console.log(CommonMethods.format(dateTest, DatePattern.DD_MM_YY));
+// console.log(CommonMethods.format(dateTest, DatePattern.DD));
+// console.log(CommonMethods.format(dateTest, DatePattern.DD_MMMM_YYYY));
+// console.log(CommonMethods.format(dateTest, DatePattern.DD_MMMM_YYYY_DDD));
+// console.log(CommonMethods.format(dateTest, DatePattern.MMMM_YYYY));
+// console.log(CommonMethods.format(dateTest, DatePattern.DDDD_DD_MMMM_YYYY));
+
+console.log(CommonMethods.generateDate(0, DayOfWeek.Monday));
+console.log(CommonMethods.generateDate(0, DayOfWeek.Sunday));
+
+console.log(CommonMethods.generateDate(1, DayOfWeek.Monday));
+console.log(CommonMethods.generateDate(1, DayOfWeek.Sunday));
+
+const date = CommonMethods.generateDate(0, DayOfWeek.Monday);
+const date2 = CommonMethods.format(date, DatePattern.DDDD_DD_MMMM);
+console.log(date2);

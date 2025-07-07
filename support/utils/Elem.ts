@@ -19,6 +19,10 @@ export default class ScreenActions {
     return browser.$(this.selector);
   }
 
+  private async getWdioElements(): Promise<WebdriverIO.ElementArray> {
+    return browser.$$(this.selector);
+  }
+
   //-----------------------------------------------------------
   // MOBILE ELEMENTS INTERACTION ADVANCED METHODS
   //-----------------------------------------------------------
@@ -215,5 +219,29 @@ export default class ScreenActions {
 
   async scrollIntoViewContainer(maxScrolls = 10, container: string): Promise<void> {
     await Gestures.scrollUntilVisibleIntoBox(this, container, maxScrolls);
+  }
+
+  /**
+   * Возвращает дочерний элемент с заданным content-desc
+   * @param desc Content-desc текст
+   */
+  public childByContentDesc(desc: string): ScreenActions {
+    return new ScreenActions(`${this.selector}//*[@content-desc="${desc}"]`, this.timeout);
+  }
+
+  // Получить элемент из коллекции по индексу и обернуть в ScreenActions
+  public async getByIndex(index: number): Promise<ScreenActions> {
+    const elements = await this.getWdioElements();
+    if (!elements[index]) {
+      throw new Error(`❌ Элемент с индексом ${index} не найден в коллекции ${this.selector}`);
+    }
+
+    // Сгенерируем уникальный XPath локатор для этого элемента — если он нужен
+    // Или вернём "сырой" объект
+    const element = elements[index];
+    const selectorString = await element.selector; // это не строка, так что ты можешь хранить сам элемент
+    const instance = new ScreenActions(this.selector);
+    (instance as any).elementInstance = element; // сохранение в инстансе напрямую
+    return instance;
   }
 }

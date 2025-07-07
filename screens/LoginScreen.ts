@@ -25,8 +25,8 @@ class LoginScreen {
     await this.loginButton.click();
   }
 
-  public async loginAgent(email: string): Promise<void> {
-    await this.inputEmailField(email);
+  public async loginAgent(email: string | number): Promise<void> {
+    await this.inputEmailField(String(email));
     await this.inputPasswordField('test');
     await this.clickLoginButton();
   }

@@ -18,10 +18,10 @@ describe('Login tests', () => {
 
   it('Positiv Login', async () => {
     await screens.login.loginAgent('214');
-    await screens.topAppBar.verifyTitleText('My Profile');
+    await screens.appBars.verifyTitleText('My Profile');
 
     await screens.equipment.movingToEquipment();
-    await screens.topAppBar.verifyTitleText('Equipment');
+    await screens.appBars.verifyTitleText('Equipment');
 
     const card = await screens.equipment.getEquipmentCardByIndex(1);
 
@@ -64,18 +64,16 @@ describe('Login tests', () => {
 
   it.only('Calendar new test', async () => {
     await screens.login.loginAgent('214');
-    await screens.topAppBar.clickCalendarButton();
-    await screens.topAppBar.clickAddButton();
+    await screens.appBars.clickCalendarButton();
+    await screens.appBars.clickAddButton();
     await screens.eventScreen.clickDropdownEventType();
     await screens.eventScreen.selectEvenType(EventType.SickLeave);
     await screens.eventScreen.clickDateRange();
     await screens.eventScreen.selectDate('Tuesday, 24 June');
     await screens.eventScreen.selectDate('Thursday, 26 June');
     await screens.eventScreen.clickConfirmButton();
-    await screens.topAppBar.clickSaveButton();
+    await screens.appBars.clickSaveButton();
 
     await driver.pause(3000);
-
-
   });
 });

@@ -1,3 +1,5 @@
+import { addWeeks, addDays, startOfWeek, isMonday } from 'date-fns';
+
 export enum DatePattern {
   DD_MM_YYYY = 'dd.MM.yyyy', // 22.05.2025
   DD_MM_YY = 'dd.MM.yy', // 22.05.25
@@ -6,7 +8,18 @@ export enum DatePattern {
   DD = 'DD', // 22
   DD_MMMM_YYYY = 'dd - MMMM - yyyy', // 22 - June - 2025
   DD_MMMM_YYYY_DDD = 'dd - MMMM - yyyy(ddd)', //22 - June - 2025(Sun)
-  MMMM_YYYY = 'MMMM YYYY' // June 2025
+  MMMM_YYYY = 'MMMM YYYY', // June 2025
+  DDDD_DD_MMMM = 'DDDD DD MMMM' // Tuesday 10 June,
+}
+
+export enum DayOfWeek {
+  Monday = 1,
+  Tuesday = 2,
+  Wednesday = 3,
+  Thursday = 4,
+  Friday = 5,
+  Saturday = 6,
+  Sunday = 7
 }
 
 class CommonMethods {
@@ -40,7 +53,8 @@ class CommonMethods {
 
     const day = String(date.getDate()).padStart(2, '0');
     const dayShort = date.toLocaleDateString('en-US', { weekday: 'short' });
-    const month = String(date.getMonth()).padStart(2, '0');
+    const dayLong = date.toLocaleDateString('en-US', { weekday: 'long' });
+    const month = String(date.getMonth() + 1).padStart(2, '0');
     const monthShort = date.toLocaleString('en-US', { month: 'short' });
     const monthLong = date.toLocaleString('en-US', { month: 'long' });
     const year = String(date.getFullYear());
@@ -63,9 +77,27 @@ class CommonMethods {
         return `${day} - ${monthLong} - ${year}(${dayShort})`;
       case DatePattern.MMMM_YYYY:
         return `${monthLong} ${year}`;
+      case DatePattern.DDDD_DD_MMMM:
+        return `${dayLong} ${day} ${monthLong}`;
       default:
         throw new Error(`Unsupported pattern: ${pattern}`);
     }
+  }
+
+  /**
+   *
+   * @param numberWeek - смещение по неделям относительно текущей недели (0-текущая неделя, 1-следующая, -1 предыдущая)
+   * @param day
+   * @returns целевая дата с обнулённым временем (00:00:00)
+   */
+  static generateDate(numberWeek: number, day: DayOfWeek): Date {
+    const today = new Date();
+    const baseWeekStart = startOfWeek(today, { weekStartsOn: 1 });
+    const targetWeekStart = addWeeks(baseWeekStart, numberWeek);
+    const targetDate = addDays(targetWeekStart, day);
+    targetDate.setHours(0, 0, 0, 0);
+
+    return targetDate;
   }
 }
 

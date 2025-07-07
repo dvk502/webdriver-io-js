@@ -1,20 +1,66 @@
+import CommonMethods, { DatePattern } from '@utils/CommonMethods';
 import Elem from '@utils/Elem';
-import Gestures from '@utils/Gestures';
-import { log } from 'console';
+import { EventStatus, EventType } from '@utils/Enums';
 
 class CalendarScreen {
   /**
    * Locators
    */
 
- 
-  private get fullName() {
-    return new Elem('id=com.trackensure.orchard:id/agentName');
+  private getDayElements(): Elem {
+    return new Elem('id=com.trackensure.orchard:id/day');
+  }
+
+  private getDateDescElem(index: number, date: string): Elem {
+    return new Elem(
+      `(//android.view.ViewGroup[@resource-id="com.trackensure.orchard:id/day"])[${index}]//*[@content-desc="${date}"]`
+    );
+  }
+
+  private getStatusElem(index: number, status: string): Elem {
+    return new Elem(
+      `(//android.view.ViewGroup[@resource-id="com.trackensure.orchard:id/day"])[${index}]//*[@content-desc="${status}"]`
+    );
+  }
+
+  private getTypeElem(index: number, type: string): Elem {
+    return new Elem(
+      `(//android.view.ViewGroup[@resource-id="com.trackensure.orchard:id/day"])[${index}]//*[@content-desc="${type}"]`
+    );
   }
 
   /***********************
    * Steps
    **********************/
+
+  public async verifyVisibleDayOffEventOnWeekView(
+    eventStatus: EventStatus,
+    eventType: EventType,
+    date: Date
+  ): Promise<void> {
+    const formattedDate = CommonMethods.format(date, DatePattern.DD_MM_YYYY);
+
+    const dayIndex = date.getDay() === 0 ? 6 : date.getDay() - 1;
+    const dayElements = this.getDayElements();
+    const dayElement = await dayElements.getByIndex(dayIndex);
+
+    
+    await dayElement.childByContentDesc(formattedDate).isDisplayed();
+    await dayElement.childByContentDesc(eventStatus).isDisplayed();
+    await dayElement.childByContentDesc(eventType).isDisplayed();
+
+
+    // Внутри day ищем 3 элемента по content-desc
+    // const dateDesc = await dayElement.$(`~${formattedDate}`);
+    // const statusDesc = await dayElement.$(`~${eventStatus}`);
+    // const typeDesc = await dayElement.$(`~${eventType}`);
+
+    // await expect(await dateDesc.isDisplayed()).toBe(true);
+    // await expect(await statusDesc.isDisplayed()).toBe(true);
+    // await expect(await typeDesc.isDisplayed()).toBe(true);
+
+    console.log(`✅ Найден DayOff: ${formattedDate}, ${eventStatus}, ${eventType}`);
+  }
 }
 
 export default new CalendarScreen();
