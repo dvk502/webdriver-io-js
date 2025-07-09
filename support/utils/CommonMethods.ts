@@ -9,7 +9,8 @@ export enum DatePattern {
   DD_MMMM_YYYY = 'dd - MMMM - yyyy', // 22 - June - 2025
   DD_MMMM_YYYY_DDD = 'dd - MMMM - yyyy(ddd)', //22 - June - 2025(Sun)
   MMMM_YYYY = 'MMMM YYYY', // June 2025
-  DDDD_DD_MMMM = 'DDDD DD MMMM' // Tuesday 10 June,
+  DDDD_DD_MMMM = 'DDDD DD MMMM', // Tuesday 02 June
+  DDDD_D_MMMM = 'DDDD D MMMM' // Tuesday 2 June
 }
 
 export enum DayOfWeek {
@@ -51,7 +52,8 @@ class CommonMethods {
       throw new Error(`Invalid date: ${dateInput}`);
     }
 
-    const day = String(date.getDate()).padStart(2, '0');
+    const dayNumber = String(date.getDate()); // 1
+    const day = String(date.getDate()).padStart(2, '0'); // 01
     const dayShort = date.toLocaleDateString('en-US', { weekday: 'short' });
     const dayLong = date.toLocaleDateString('en-US', { weekday: 'long' });
     const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -79,6 +81,8 @@ class CommonMethods {
         return `${monthLong} ${year}`;
       case DatePattern.DDDD_DD_MMMM:
         return `${dayLong} ${day} ${monthLong}`;
+      case DatePattern.DDDD_D_MMMM:
+        return `${dayLong} ${dayNumber} ${monthLong}`;
       default:
         throw new Error(`Unsupported pattern: ${pattern}`);
     }

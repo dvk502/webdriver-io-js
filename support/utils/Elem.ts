@@ -110,10 +110,10 @@ export default class ScreenActions {
     try {
       const element = await this.getWdioElement();
       await element.waitForExist({ timeout: timeout * 1000 });
-      console.log(`Element '${this.selector}' is present`);
+      console.log(`✅ Element '${this.selector}' is present`);
       return true;
     } catch (error) {
-      console.log(`Element '${this.selector}' is not present, return False`);
+      console.log(`❌ Element '${this.selector}' is not present, return False`);
       return false;
     }
   }
@@ -133,7 +133,7 @@ export default class ScreenActions {
     const isElementPresent = await this.isPresent(timeout);
 
     if (!isElementPresent) {
-      const errorMessage = `Element with selector "${
+      const errorMessage = `❌ Element with selector "${
         this.selector
       }" is not present after '${timeout}' sec! ${customErrorMessage ? customErrorMessage : ''}`;
       throw new Error(errorMessage);

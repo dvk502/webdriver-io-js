@@ -8,7 +8,7 @@ class CalendarScreen {
    */
 
   private getDayElements(): Elem {
-    return new Elem('id=com.trackensure.orchard:id/day');
+    return new Elem('//android.view.View[@resource-id="com.trackensure.orchard:id/day"]');
   }
 
   private getDateDescElem(index: number, date: string): Elem {
@@ -44,21 +44,9 @@ class CalendarScreen {
     const dayElements = this.getDayElements();
     const dayElement = await dayElements.getByIndex(dayIndex);
 
-    
-    await dayElement.childByContentDesc(formattedDate).isDisplayed();
-    await dayElement.childByContentDesc(eventStatus).isDisplayed();
-    await dayElement.childByContentDesc(eventType).isDisplayed();
-
-
-    // Внутри day ищем 3 элемента по content-desc
-    // const dateDesc = await dayElement.$(`~${formattedDate}`);
-    // const statusDesc = await dayElement.$(`~${eventStatus}`);
-    // const typeDesc = await dayElement.$(`~${eventType}`);
-
-    // await expect(await dateDesc.isDisplayed()).toBe(true);
-    // await expect(await statusDesc.isDisplayed()).toBe(true);
-    // await expect(await typeDesc.isDisplayed()).toBe(true);
-
+    await dayElement.childByContentDesc(formattedDate).checkIsDisplayed();
+    await dayElement.childByContentDesc(eventStatus).checkIsDisplayed();
+    await dayElement.childByContentDesc(eventType).checkIsDisplayed();
     console.log(`✅ Найден DayOff: ${formattedDate}, ${eventStatus}, ${eventType}`);
   }
 }

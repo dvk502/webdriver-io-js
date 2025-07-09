@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "tests:all": "npx wdio run wdio.conf.ts --suite orchard_all_test",
-    "test": "npx wdio run wdio.conf.ts --spec ./tests/LoginTest.spec.ts"
+    "test": "npx wdio run wdio.conf.ts --spec ./tests/CalendarTest.spec.ts"
   },
   "author": "",
   "license": "ISC",
@@ -27,6 +27,7 @@
     "appium": "^1.22.3",
     "appium-uiautomator2-driver": "^3.5.2",
     "axios": "^1.9.0",
+    "date-fns": "^4.1.0",
     "dotenv": "^16.4.5",
     "eslint": "^8.56.0",
     "eslint-config-standard-with-typescript": "43.0.1",
