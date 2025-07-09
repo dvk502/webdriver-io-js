@@ -10,7 +10,7 @@ class CalendarPicker {
    */
 
   private dateCalendar(date: string) {
-    return new Elem(`//android.widget.TextView[@content-desc="${date}"]`);
+    return new Elem(`//android.widget.TextView[contains(@content-desc,"${date}")]`);
   }
 
   private get cancelButton() {

@@ -1,4 +1,5 @@
 import DayOffContoller from '@api/controllers/DayOffContoller';
+import { tokenCache } from '@api/controllers/LoginController';
 import AgentMapper from '@api/mappers/AgentMapper';
 import { Status } from '@api/models/DayOffModel';
 import { ApplicationScreens } from '@screens/ApplicationScreens';
@@ -11,7 +12,12 @@ describe('Calendar tests', () => {
   const teamLeadId = 163;
 
   beforeEach(async () => {
+    if (browser.sessionId) {
+      console.log('🔁 Завершаем предыдущую сессию...');
+      await browser.reloadSession();
+    }
     console.log('➡️ Before each test');
+    tokenCache.clear();
 
     const response = await new DayOffContoller().getDayOff(agentId, 1735682400000, 1767132000000);
 
@@ -29,7 +35,7 @@ describe('Calendar tests', () => {
     }
   });
 
-  it.only('01 Create Day Off', async () => {
+  it('01 Create Day Off', async () => {
     const dateFrom = CommonMethods.generateDate(-1, DayOfWeek.Tuesday);
     const dateTo = CommonMethods.generateDate(-1, DayOfWeek.Wednesday);
 
@@ -61,7 +67,73 @@ describe('Calendar tests', () => {
       EventType.DayOff,
       dateFrom
     );
+  });
 
-    await driver.pause(5000);
+  it('02 Create Vacation', async () => {
+    const dateFrom = CommonMethods.generateDate(0, DayOfWeek.Monday);
+    const dateTo = CommonMethods.generateDate(0, DayOfWeek.Friday);
+
+    console.log(`dateFrom initiate ${dateFrom}`);
+    console.log(`dateTo initiate${dateTo}`);
+
+    await screens.login.loginAgent(agentId);
+
+    await screens.appBars.clickCalendarButton();
+    await screens.appBars.clickAddButton();
+
+    await screens.eventScreen.clickDropdownEventType();
+    await screens.eventScreen.selectEvenType(EventType.Vacation);
+    await screens.eventScreen.clickDateRange();
+
+    await screens.calendarPicker.selectDate(dateFrom);
+    await screens.calendarPicker.selectDate(dateTo);
+    await screens.calendarPicker.clickOkButton();
+
+    await screens.appBars.clickSaveButton();
+
+    await screens.calendar.verifyVisibleDayOffEventOnWeekView(
+      EventStatus.Requested,
+      EventType.Vacation,
+      dateFrom
+    );
+    await screens.calendar.verifyVisibleDayOffEventOnWeekView(
+      EventStatus.Requested,
+      EventType.Vacation,
+      dateFrom
+    );
+  });
+
+  it('03 Create Sick Leave', async () => {
+    const dateFrom = CommonMethods.generateDate(1, DayOfWeek.Tuesday);
+    const dateTo = CommonMethods.generateDate(1, DayOfWeek.Thursday);
+
+    console.log(`dateFrom initiate ${dateFrom}`);
+    console.log(`dateTo initiate${dateTo}`);
+
+    await screens.login.loginAgent(agentId);
+
+    await screens.appBars.clickCalendarButton();
+    await screens.appBars.clickAddButton();
+
+    await screens.eventScreen.clickDropdownEventType();
+    await screens.eventScreen.selectEvenType(EventType.SickLeave);
+    await screens.eventScreen.clickDateRange();
+
+    await screens.calendarPicker.selectDate(dateFrom);
+    await screens.calendarPicker.selectDate(dateTo);
+    await screens.calendarPicker.clickOkButton();
+
+    await screens.appBars.clickSaveButton();
+
+    await screens.calendar.verifyVisibleDayOffEventOnWeekView(
+      EventStatus.Requested,
+      EventType.SickLeave,
+      dateFrom
+    );
+    await screens.calendar.verifyVisibleDayOffEventOnWeekView(
+      EventStatus.Requested,
+      EventType.SickLeave,
+      dateFrom
+    );
   });
 });

@@ -9,7 +9,7 @@ interface UserAuthData {
   authToken?: string;
 }
 
-const tokenCache: Map<string, AuthResponse> = new Map();
+export const tokenCache: Map<string, AuthResponse> = new Map();
 
 class LoginController extends ApiController {
   async preAuthenticate(username: string): Promise<UserAuthData> {
